@@ -1,12 +1,14 @@
 // server.js
 const express = require('express');
 const connectDB = require('./db');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
 // Conectar ao MongoDB
 connectDB();
+app.use(cors());
 
 // Middleware
 app.use(express.json()); // Para analisar JSON no corpo da requisição
