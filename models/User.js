@@ -13,8 +13,8 @@ const UserSchema = new mongoose.Schema({
   userPhoto: { type: String, required: true }, // URL da foto do usuário
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  role: { type: String, required: true },
+  role: { type: String, enum: ['motorista', 'passageiro'], default: 'passageiro' },
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Users', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

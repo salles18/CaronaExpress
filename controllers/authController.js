@@ -60,7 +60,12 @@ const login = async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.status(200).json({ message: 'Login realizado com sucesso', token });
+    // Retornar o token e o role do usuário
+    res.status(200).json({
+      message: 'Login realizado com sucesso',
+      token,
+      role: user.role, // Adicionando o role à resposta
+    });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao realizar login', error });
   }
