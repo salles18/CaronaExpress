@@ -1,6 +1,7 @@
 // models/Carona.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // seu arquivo de configuração do Sequelize
+const sequelize = require('../config/database');
+const User = require('./User'); // seu arquivo de configuração do Sequelize
 
 const Carona = sequelize.define('Carona', {
   cidadeInicial: DataTypes.STRING,
@@ -27,5 +28,10 @@ const Carona = sequelize.define('Carona', {
     allowNull: true,
   },
 });
+Carona.belongsTo(User, { foreignKey: 'motoristaId', as: 'motorista' });
+User.hasMany(Carona, { as: 'caronas', foreignKey: 'motoristaId' });
+Carona.belongsTo(User, { as: 'passageiro', foreignKey: 'passageiroId' });
+
+
 
 module.exports = Carona;

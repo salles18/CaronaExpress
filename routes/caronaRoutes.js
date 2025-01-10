@@ -1,8 +1,14 @@
 const express = require('express');
-const { cadastrarCarona, listarCaronas, pegarCarona } = require('../controllers/caronaController');
+const { cadastrarCarona, listarCaronas, pegarCarona, listarCaronasMotorista } = require('../controllers/caronaController');
 const autenticarUsuario = require('../middleware/authMiddleware'); // Middleware de autenticação
 const router = express.Router();
-const Carona = require('../models/Carona'); // Modelo Carona usando Sequelize
+const Carona = require('../models/Carona'); 
+
+const { listarCaronasPorPassageiro } = require('../controllers/caronaController');
+
+
+
+
 
 // Rota para deletar carona (rota protegida)
 router.delete('/caronas/:id', autenticarUsuario, async (req, res) => {
@@ -43,7 +49,7 @@ router.post('/carona/:id/pegar', autenticarUsuario, async (req, res) => {
 });
 
 // Rota pública para listar caronas (não protegida)
-router.get('/caronas', async (req, res) => {
+router.get('/caronas', autenticarUsuario, listarCaronas, async (req, res) => {
   try {
     await listarCaronas(req, res); // Chama o controlador para listar caronas
   } catch (error) {
@@ -51,5 +57,17 @@ router.get('/caronas', async (req, res) => {
     res.status(500).json({ message: 'Erro ao listar caronas' });
   }
 });
+
+router.get('/motorista/caronas', autenticarUsuario, listarCaronasMotorista, async (req, res) => {
+  try {
+    await listarCaronas(req, res); // Chama o controlador para listar caronas
+  } catch (error) {
+    console.error('Erro ao listar caronas:', error);
+    res.status(500).json({ message: 'Erro ao listar caronas' });
+  }
+});
+
+router.get('/caronas/minhas-caronas/:passageiroId', autenticarUsuario, listarCaronasPorPassageiro);
+
 
 module.exports = router;
